@@ -1,31 +1,29 @@
-
 package main
 
 type store struct {
-  table       map[string]string
+	table map[string]string
 }
 
 var instance *store
 
 func GetStore() *store {
-  if instance == nil {
-    tmpMap := make(map[string]string)
-    instance = &store{tmpMap}
-  }
-  
-  return instance
+	if instance == nil {
+		tmpMap := make(map[string]string)
+		instance = &store{tmpMap}
+	}
+
+	return instance
 }
 
 func (s *store) Add(k, v string) {
-  s.table[k] = v
+	s.table[k] = v
 }
 
 func (s *store) Get(k string) string {
-  // todo: error handling (key error)
-  return s.table[k]
+	// todo: error handling (key error)
+	return s.table[k]
 }
 
 func (s *store) Delete(k string) {
-  delete(s.table, k)
+	delete(s.table, k)
 }
-
