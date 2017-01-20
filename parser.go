@@ -8,11 +8,10 @@ const (
 	GET    = "get"
 	ADD    = "add"
 	DELETE = "delete"
-)
 
-func AddUsage() string {
-	return "Invalid usage of add:\nUsage: add [key] [value]"
-}
+	GET_USAGE = "Invalid use of get:\nUsage: get [key]"
+	ADD_USAGE = "Invalid usage of add:\nUsage: add [key] [value]"
+)
 
 func ParseCommand(s string) string {
 	words := strings.Split(s, " ")
@@ -20,10 +19,13 @@ func ParseCommand(s string) string {
 	datastore := GetStore()
 	switch cmd {
 	case GET:
+		if len(words) != 2 {
+			return GET_USAGE
+		}
 		return datastore.Get(words[1]) + "\n"
 	case ADD:
 		if len(words) < 3 {
-			return AddUsage()
+			return ADD_USAGE
 		}
 		key := words[1]
 		value := words[2]
