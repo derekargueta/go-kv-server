@@ -21,7 +21,6 @@ func TestParsingAdd(t *testing.T) {
 	}
 }
 
-
 func TestParsingGet(t *testing.T) {
 	// stick something in the store to retrieve as a test
 	GetStore().Add("hi", "hello")

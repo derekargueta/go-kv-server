@@ -22,7 +22,9 @@ func ParseCommand(s string) string {
 		if len(words) != 2 {
 			return GET_USAGE
 		}
-		return datastore.Get(words[1]) + "\n"
+		key := words[1]
+		result := datastore.Get(key) + "\n"
+		return result
 	case ADD:
 		if len(words) < 3 {
 			return ADD_USAGE
