@@ -8,6 +8,8 @@ const (
 	GET    = "get"
 	ADD    = "add"
 	DELETE = "delete"
+    DUMP   = "dump"
+    STATUS = "status"
 
 	GET_USAGE = "Invalid use of get:\nUsage: get [key]"
 	ADD_USAGE = "Invalid usage of add:\nUsage: add [key] [value]"
@@ -36,6 +38,10 @@ func ParseCommand(s string) string {
 	case DELETE:
 		datastore.Delete(words[1])
 		return "Deleted!\n"
+    case DUMP:
+        return datastore.Dump()
+    case STATUS:
+        return "OK\n"
 	default:
 		return "Unrecognized command\n"
 	}

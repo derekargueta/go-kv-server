@@ -15,6 +15,26 @@ var peers *list.List
 func queryPeer(addr string) {
 	// TODO: send a message to peer to
 	// return all k-v data serialized
+    ln, err := net.Listen("tcp", "5000")
+    defer ln.Close()
+
+    if err != nil {
+        fmt.Printf("Couldn't connect to peer %s\n", addr)
+    }
+
+    conn, err := ln.Accept()
+
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    reader := bufio.NewReader(conn)
+    line, err := reader.ReadString('\n')
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println(line)
+    conn.Close()
 }
 
 func collectPeers() {
