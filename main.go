@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"container/list"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net"
@@ -13,39 +14,48 @@ import (
 var peers *list.List
 
 func queryPeer(addr string) {
-	// TODO: send a message to peer to
-	// return all k-v data serialized
-	ln, err := net.Listen("tcp", "5000")
-	defer ln.Close()
+
+	conn, err := net.Dial("tcp", addr)
+	defer conn.Close()
 
 	if err != nil {
 		fmt.Printf("Couldn't connect to peer %s\n", addr)
 	}
 
-	conn, err := ln.Accept()
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	fmt.Println("set up reader/writer?")
+	writer := bufio.NewWriter(conn)
 	reader := bufio.NewReader(conn)
+
+	writer.WriteString("dump\n")
+	writer.Flush()
+
+	fmt.Println("read")
 	line, err := reader.ReadString('\n')
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println(line)
-	conn.Close()
+
+	var m map[string]string
+	err = json.Unmarshal([]byte(line), &m)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for k, v := range m {
+		GetStore().Add(k, v)
+	}
 }
 
 func collectPeers() {
 	peers = list.New()
 	// parse arguments
-	if len(os.Args) > 1 {
+	if len(os.Args) > 2 {
 		fmt.Println("There are peers")
 	}
 
-	for i := 0; i < len(os.Args)-1; i += 1 {
+	for i := 2; i < len(os.Args); i += 1 {
 		peerAddr := os.Args[i]
+		fmt.Printf("queerying %s\n", peerAddr)
 		queryPeer(peerAddr)
 		peers.PushBack(peerAddr)
 	}
@@ -68,7 +78,16 @@ func socketHandler(c net.Conn) {
 
 func main() {
 	collectPeers()
-	ln, err := net.Listen("tcp", ":8080")
+
+	// fmt.Println(peers.Len())
+	// if peers.Len() > 0 {
+	// 	fmt.Println("querying peers")
+	// 	for e := peers.Front(); e != nil; e = e.Next() {
+	// 		queryPeer(e.Value.(string))
+	// 	}
+	// }
+
+	ln, err := net.Listen("tcp", os.Args[1])
 	if err != nil {
 		log.Fatal(err)
 	}
