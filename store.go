@@ -1,8 +1,8 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-    "encoding/json"
 )
 
 type store struct {
@@ -37,7 +37,6 @@ func (s *store) Delete(k string) {
 }
 
 func (s *store) Dump() string {
-    jsonBytes, _ := json.Marshal(s.table)
-    return string(jsonBytes)
+	jsonBytes, _ := json.Marshal(s.table)
+	return string(jsonBytes)
 }
-
