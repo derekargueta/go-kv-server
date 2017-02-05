@@ -22,14 +22,12 @@ func queryPeer(addr string) {
 		fmt.Printf("Couldn't connect to peer %s\n", addr)
 	}
 
-	fmt.Println("set up reader/writer?")
 	writer := bufio.NewWriter(conn)
 	reader := bufio.NewReader(conn)
 
-	writer.WriteString("dump\n")
+	writer.WriteString(DUMP)
 	writer.Flush()
 
-	fmt.Println("read")
 	line, err := reader.ReadString('\n')
 	if err != nil {
 		log.Fatal(err)
@@ -55,7 +53,6 @@ func collectPeers() {
 
 	for i := 2; i < len(os.Args); i += 1 {
 		peerAddr := os.Args[i]
-		fmt.Printf("queerying %s\n", peerAddr)
 		queryPeer(peerAddr)
 		peers.PushBack(peerAddr)
 	}
@@ -78,14 +75,6 @@ func socketHandler(c net.Conn) {
 
 func main() {
 	collectPeers()
-
-	// fmt.Println(peers.Len())
-	// if peers.Len() > 0 {
-	// 	fmt.Println("querying peers")
-	// 	for e := peers.Front(); e != nil; e = e.Next() {
-	// 		queryPeer(e.Value.(string))
-	// 	}
-	// }
 
 	ln, err := net.Listen("tcp", os.Args[1])
 	if err != nil {

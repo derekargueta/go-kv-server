@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -44,7 +43,6 @@ func ParseCommand(s string) string {
 		datastore.Delete(words[1])
 		return "Deleted!\n"
 	case DUMP:
-		fmt.Println("Sending dump")
 		return datastore.Dump() + "\n"
 	case STATUS:
 		return "OK\n"
