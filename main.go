@@ -16,23 +16,21 @@ var peers *list.List
 func queryPeer(addr string) {
 
 	conn, err := net.Dial("tcp", addr)
-	defer conn.Close()
-
 	if err != nil {
 		fmt.Printf("Couldn't connect to peer %s\n", addr)
 	}
-
+	defer conn.Close()
 	writer := bufio.NewWriter(conn)
 	reader := bufio.NewReader(conn)
 
-	writer.WriteString(DUMP)
+	writer.WriteString(DUMP + "\n")
 	writer.Flush()
 
 	line, err := reader.ReadString('\n')
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(line)
+	fmt.Printf(line)
 
 	var m map[string]string
 	err = json.Unmarshal([]byte(line), &m)
