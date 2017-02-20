@@ -12,9 +12,6 @@ const (
 	DUMP   = "dump"
 	STATUS = "status"
 	PEER   = "peer"
-
-	GET_USAGE = "Invalid use of get:\nUsage: get [key]"
-	ADD_USAGE = "Invalid usage of add:\nUsage: add [key] [value]"
 )
 
 func ParsePeerCommand(s []string) string {
@@ -39,23 +36,11 @@ func ParseCommand(s string) string {
 	datastore := GetStore()
 	switch cmd {
 	case GET:
-		if len(words) != 2 {
-			return GET_USAGE
-		}
-		key := words[1]
-		result := datastore.Get(key) + "\n"
-		return result
+		return GetCmd(words)
 	case ADD:
-		if len(words) < 3 {
-			return ADD_USAGE
-		}
-		key := words[1]
-		value := words[2]
-		datastore.Add(key, value)
-		return "Added!\n"
+		return AddCmd(words)
 	case DELETE:
-		datastore.Delete(words[1])
-		return "Deleted!\n"
+		return DeleteCmd(words)
 	case DUMP:
 		fmt.Println("giving dump")
 		return datastore.Dump() + "\n"
