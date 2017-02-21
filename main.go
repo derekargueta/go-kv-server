@@ -44,10 +44,6 @@ func queryPeer(addr string) {
 
 func collectPeers() {
 	peers = list.New()
-	// parse arguments
-	if len(os.Args) > 2 {
-		fmt.Println("There are peers")
-	}
 
 	for i := 2; i < len(os.Args); i += 1 {
 		peerAddr := os.Args[i]

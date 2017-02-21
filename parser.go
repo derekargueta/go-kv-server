@@ -42,12 +42,10 @@ func ParseCommand(s string) string {
 	case DELETE:
 		return DeleteCmd(words)
 	case DUMP:
-		fmt.Println("giving dump")
 		return datastore.Dump() + "\n"
 	case STATUS:
 		return "OK\n"
 	case PEER:
-		// we're assuming key[1] is "add" atm
 		return ParsePeerCommand(words)
 	default:
 		return "Unrecognized command\n"
