@@ -1,4 +1,8 @@
 
+A Distributed Key-Value Server
+=================================
+
+[![Go Report Card](https://goreportcard.com/badge/github.com/derekargueta/go-kv-server)](https://goreportcard.com/report/github.com/derekargueta/go-kv-server)
 
 Design
 =======
